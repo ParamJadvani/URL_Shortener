@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Add URL Form Styles */
+        form {
+            max-width: 500px;
+            margin: 0 auto 40px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        form button:hover {
+            background-color: #005fa3;
+        }
+
+        /* Table Styles */
+        .url-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .url-table th, .url-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .url-table th {
+            background-color: #0077cc;
+            color: white;
+        }
+
+        .url-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .url-table button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .url-table .edit-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .url-table .edit-btn:hover {
+            background-color: #138496;
+        }
+
+        .url-table .delete-btn {
+            background-color: #ff4d4f;
+            color: white;
+        }
+
+        .url-table .delete-btn:hover {
+            background-color: #dc3545;
+        }
+
+        /* Edit Mode Styles */
+        .edit-mode {
+            display: none;
+        }
+
+        .edit-mode input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .edit-mode button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .edit-mode button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .edit-mode button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .edit-mode button[type="button"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .edit-mode button[type="button"]:hover {
+            background-color: #5a6268;
+        }
+
+        /* Anchor Tag Styles */
+        .url-table a {
+            color: #0077cc;
+            text-decoration: none;
+        }
+
+        .url-table a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Home Page</h1>
+
+    <!-- Add URL Form -->
+    <h2>Add New URL</h2>
+    <form action="/urls" method="POST">
+        <label>
+            Short Code:
+            <input type="text" name="short_code" placeholder="Short Code" required>
+        </label>
+        <label>
+            Original URL:
+            <input type="text" name="url" placeholder="Original URL" required>
+        </label>
+        <button type="submit">Add URL</button>
+    </form>
+
+    <!-- URL Table -->
+    <div class="url-table-container">
+        <% if (urls && urls.length > 0) { %>
+            <table class="url-table">
+                <thead>
+                    <tr>
+                        <th>Short Code</th>
+                        <th>Original URL</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% urls.forEach(function(url) { %>
+                        <tr>
+                            <td class="short-code"><a href="<%= url.url %>"><%= url.short_code %></a></td>
+                            <td class="original-url"><%= url.url %></td>
+                            <td>
+                                <button class="edit-btn">Edit</button>
+                                <form action="/urls/delete/<%= url.id %>" method="POST" style="display: inline;">
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this URL?');">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <!-- Edit Row -->
+                        <tr class="edit-mode">
+                            <td colspan="3">
+                                <form action="/urls/update/<%= url.id %>" method="post">
+                                    <label>
+                                        Short Code:
+                                        <input type="text" name="short_code" value="<%= url.short_code %>" required>
+                                    </label>
+                                    <label>
+                                        Original URL:
+                                        <input type="text" name="url" value="<%= url.url %>" required>
+                                    </label>
+                                    <button type="submit">Save</button>
+                                    <button type="button" class="cancel-btn">Cancel</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No URLs to display.</p>
+        <% } %>
+    </div>
+
+    <!-- JavaScript for Toggling Edit Mode -->
+    <script>
+        document.querySelectorAll('.edit-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const editRow = row.nextElementSibling;
+                editRow.style.display = 'table-row';
+                row.style.display = 'none';
+            });
+        });
+
+        document.querySelectorAll('.cancel-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const editRow = this.closest('tr');
+                const viewRow = editRow.previousElementSibling;
+                editRow.style.display = 'none';
+                viewRow.style.display = 'table-row';
+            });
+        });
+    </script>
+
+</body>
+</html>
