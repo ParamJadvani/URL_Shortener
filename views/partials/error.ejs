@@ -1,0 +1,7 @@
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="error-container">
+    <div class="error-message">
+      <p><%= error.message || error %></p>
+    </div>
+  </div>
+<% } %>

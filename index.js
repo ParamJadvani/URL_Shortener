@@ -1,6 +1,7 @@
 import path from "path"
 import express from "express";
 import IndexRouter from "./router/index.js";
+import globalErrorHandler from "./middleware/error.middleware.js";
 import { fileURLToPath } from 'url';
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(IndexRouter);
 
+// Global error handler
+app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
   console.log(`server is listening on http://localhost:${PORT}`);
