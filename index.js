@@ -50,7 +50,6 @@ app.use(async (req, res, next) => {
   next();
 });
 
-
 app.use((req, res, next) => {
   res.locals.success = req.session.success;
   res.locals.error = req.session.error;
@@ -68,7 +67,7 @@ app.use((req, res, next) => {
   }
 
   if (changed) {
-    req.session.save(err => {
+    req.session.save((err) => {
       if (err) {
         console.error("Error saving session after clearing flash:", err);
       }
@@ -79,11 +78,10 @@ app.use((req, res, next) => {
   }
 });
 
-
 // Routes
 app.use(IndexRouter);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+  console.log(`Server listening on ${PORT}`);
 });
