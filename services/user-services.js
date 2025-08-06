@@ -2,7 +2,7 @@ import db from "../config/db.js";
 import userTable from "../schema/user-schema.js";
 import { eq } from "drizzle-orm";
 
-export const createUser = async (data) =>
+export const createUser = async (data) => {
   await db
     .insert(userTable)
     .values({
@@ -11,6 +11,8 @@ export const createUser = async (data) =>
       password: data.password,
     })
     .$returningId();
+  return await getUserData(data.email);
+};
 
 export const getUserData = async (email) =>
   await db.select().from(userTable).where(eq(userTable.email, email));

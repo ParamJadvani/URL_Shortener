@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
       return res.redirect("/signup");
     }
 
-    const user = await createUser({
+    const [user] = await createUser({
       name,
       email,
       password: await argon2.hash(password),
@@ -76,7 +76,6 @@ export const loginUser = async (req, res) => {
     res.redirect("/login");
   }
 };
-
 
 export const logoutUser = (req, res) => {
   res.clearCookie("token");
