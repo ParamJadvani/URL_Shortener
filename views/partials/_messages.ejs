@@ -1,0 +1,21 @@
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="fixed top-4 right-4 z-50 max-w-sm w-full animate-fade-in-down">
+    <div class="p-4 rounded-lg bg-green-100 border-l-4 border-green-500 text-green-700 shadow-lg">
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-medium"><%= success %></p>
+        <button class="ml-2 text-green-800 hover:text-green-900" onclick="this.closest('.fixed').remove()">✕</button>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="fixed top-4 right-4 z-50 max-w-sm w-full animate-fade-in-down">
+    <div class="p-4 rounded-lg bg-red-100 border-l-4 border-red-500 text-red-700 shadow-lg">
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-medium"><%= error %></p>
+        <button class="ml-2 text-red-800 hover:text-red-900" onclick="this.closest('.fixed').remove()">✕</button>
+      </div>
+    </div>
+  </div>
+<% } %>

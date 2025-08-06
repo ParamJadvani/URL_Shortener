@@ -1,11 +1,12 @@
 import { int, mysqlTable, timestamp, varchar } from "drizzle-orm/mysql-core"
 
-const shortUrlTable = mysqlTable("url", {
+const userTable = mysqlTable("user", {
     id: int().autoincrement().primaryKey(),
-    url:varchar({length:255}).notNull(),
-    short_code:varchar({length:255}).notNull().unique(),
+    name:varchar({length:255}).notNull(),
+    email:varchar({length:255}).notNull().unique(),
+    password:varchar({length:255}).notNull(),
     createdAt:timestamp("created_at").defaultNow().notNull(),
     updatedAt:timestamp("updated_at").defaultNow().notNull().onUpdateNow()
 })
 
-export default shortUrlTable;
+export default userTable;
